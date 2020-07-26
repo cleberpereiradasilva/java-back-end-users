@@ -7,7 +7,7 @@
 
 
 ## How to start
-``
+```
 	$ git clone git@github.com:cleberpereiradasilva/java-back-end-users.git
 
 	$ cd java-back-end
@@ -16,7 +16,7 @@
 
 	$ java -jar target/users-0.0.1-SNAPSHOT.jar
 
-``
+```
 
 
 
