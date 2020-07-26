@@ -3,7 +3,7 @@
 
 The project *java-back-end-users* is a simple system for User CRUD and authentication provider to another applications.
 
-*My first repository on Github without branch **master**, I believe we have better words like **main**, **prod**, **dev**. *
+*My first repository on Github without branch **master**, I believe we have better words like **main**, **prod**, **dev***
 
 
 ## How to start
