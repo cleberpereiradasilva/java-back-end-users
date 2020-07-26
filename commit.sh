@@ -6,4 +6,4 @@ echo "Message in $commit_message"
 echo "Branch $branch"
 
 git commit -m "$commit_message"
-git push "$branch"
+git push origin "$branch"
