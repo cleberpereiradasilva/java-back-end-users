@@ -10,8 +10,7 @@ The project *java-back-end-users* is a simple system for User CRUD and authentic
 ```
 	$ git clone git@github.com:cleberpereiradasilva/java-back-end-users.git
 	$ cd java-back-end
-	$ mvn clean package
-	$ java -jar target/users-0.0.1-SNAPSHOT.jar
+	$ ./run.sh
 
 ```
 
