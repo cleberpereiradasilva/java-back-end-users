@@ -5,18 +5,18 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
+
+@MappedSuperclass
 @Data
-@EqualsAndHashCode
 abstract class AbstractModel{
 	
 	@Id
 	private final String Id;
 	private final Date createdAt;
-	private Date updatedAt;
 
 	public AbstractModel(){
 		this.Id = UUID.randomUUID().toString();

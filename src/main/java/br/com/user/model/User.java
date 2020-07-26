@@ -1,23 +1,27 @@
 package br.com.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NonNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Entity
 @Data
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
 public class User extends AbstractModel{
 
 
-	@NonNull
+	@Column(nullable = false)
 	private String name;
 
-	@NonNull
+	@Column(unique = true, nullable = false)	
 	private String email;
 
-	@NonNull	
+	@Column(nullable = false)
 	private String password;
 
 
