@@ -12,7 +12,7 @@ import lombok.Data;
 
 @MappedSuperclass
 @Data
-abstract class AbstractModel{
+public abstract class AbstractModel{
 	
 	@Id
 	private final String Id;

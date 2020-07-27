@@ -1,8 +1,8 @@
 package br.com.user.controller;
 
-import java.util.Calendar;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.user.respository.UserRepository;
 import br.com.user.model.User;
+import br.com.user.responseDTO.UserResponseDTO;
 
 @RestController
 @RequestMapping(path = "/user")
@@ -25,6 +26,10 @@ public class UserController{
 
 	@Autowired
 	private UserRepository userRepository;
+
+
+	@Autowired
+	private ModelMapper modelMapper; 
 
 
 	@GetMapping
@@ -39,8 +44,10 @@ public class UserController{
 	}
 
 	@GetMapping(path = "/{id}")
-	public ResponseEntity<User> getUser(@PathVariable("id") String id){
-			return this.userRepository.findById(id).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	public ResponseEntity<UserResponseDTO> getUser(@PathVariable("id") String id){
+			UserResponseDTO userResponseDTO = this.modelMapper.map(this.userRepository.findById(id), UserResponseDTO.class);
+			//return this.userRepository.findById(id).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+			return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
 	}
 
 	@PutMapping(path = "/{id}")
