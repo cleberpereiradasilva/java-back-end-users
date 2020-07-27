@@ -38,6 +38,10 @@ public class UserController{
 		return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
 	}
 
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<User> getUser(@PathVariable("id") String id){
+			return this.userRepository.findById(id).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+	}
 
 	@PutMapping(path = "/{id}")
 	public ResponseEntity<User> putUser(@PathVariable("id") String id, @RequestBody User user){
