@@ -29,8 +29,7 @@ public class UserController{
 
 	@GetMapping
 	public ResponseEntity<List<User>> listUser(){
-			List<User> users= this.userRepository.findAll();
-			return new ResponseEntity<>(users, HttpStatus.OK);
+			return new ResponseEntity<>(this.userRepository.findAll(), HttpStatus.OK);
 	}
 
 
