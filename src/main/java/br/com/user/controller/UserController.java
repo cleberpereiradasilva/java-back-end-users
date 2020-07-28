@@ -1,7 +1,8 @@
 package br.com.user.controller;
 
 import java.util.List;
-
+import java.util.stream.Collectors;
+import org.hibernate.engine.internal.Collections;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.user.respository.UserRepository;
 import br.com.user.model.User;
+import br.com.user.requestDTO.UserRequestDTO;
 import br.com.user.responseDTO.UserResponseDTO;
 
 @RestController
@@ -33,20 +35,24 @@ public class UserController{
 
 
 	@GetMapping
-	public ResponseEntity<List<User>> listUser(){
-			return new ResponseEntity<>(this.userRepository.findAll(), HttpStatus.OK);
+	public ResponseEntity<List<UserResponseDTO>> listUser(){
+			List<UserResponseDTO> listUserDTO = this.userRepository.findAll()
+					.stream().map(user ->this.modelMapper(user, UserResponseDTO.class)).collect(Collectors.toList());
+
+			return new ResponseEntity<>(listUserDTO, HttpStatus.OK);
+					
 	}
 
 
 	@PostMapping
-	public ResponseEntity<User> saveUser(@RequestBody User user){
-		return new ResponseEntity<>(userRepository.save(user), HttpStatus.CREATED);
+	public ResponseEntity<UserResponseDTO> saveUser(@RequestBody UserRequestDTO user){
+		User newUser = this.modelMapper.map(user, User.class);
+		return new ResponseEntity<>(this.modelMapper.map(this.userRepository.save(newUser), UserResponseDTO.class), HttpStatus.CREATED);
 	}
 
 	@GetMapping(path = "/{id}")
 	public ResponseEntity<UserResponseDTO> getUser(@PathVariable("id") String id){
-			UserResponseDTO userResponseDTO = this.modelMapper.map(this.userRepository.findById(id), UserResponseDTO.class);
-			//return this.userRepository.findById(id).map(user -> new ResponseEntity<>(user, HttpStatus.OK)).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+			UserResponseDTO userResponseDTO = this.modelMapper.map(this.userRepository.findById(id).get(), UserResponseDTO.class);
 			return new ResponseEntity<>(userResponseDTO, HttpStatus.OK);
 	}
 
