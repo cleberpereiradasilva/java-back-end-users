@@ -1,9 +1,13 @@
 package br.com.user.controller;
 
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 import org.hibernate.engine.internal.Collections;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,16 +40,15 @@ public class UserController{
 
 	@GetMapping
 	public ResponseEntity<List<UserResponseDTO>> listUser(){
-			List<UserResponseDTO> listUserDTO = this.userRepository.findAll()
-					.stream().map(user ->this.modelMapper(user, UserResponseDTO.class)).collect(Collectors.toList());
-
+      Type listType = new  TypeToken<List<UserResponseDTO>>() {}.getType();
+			List<UserResponseDTO> listUserDTO = this.modelMapper.map(this.userRepository.findAll(), listType);
 			return new ResponseEntity<>(listUserDTO, HttpStatus.OK);
-					
 	}
 
 
 	@PostMapping
 	public ResponseEntity<UserResponseDTO> saveUser(@RequestBody UserRequestDTO user){
+      
 		User newUser = this.modelMapper.map(user, User.class);
 		return new ResponseEntity<>(this.modelMapper.map(this.userRepository.save(newUser), UserResponseDTO.class), HttpStatus.CREATED);
 	}
