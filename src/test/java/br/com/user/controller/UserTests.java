@@ -15,6 +15,7 @@ import br.com.user.respository.UserRepository;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,12 +71,27 @@ class UserControllerTests {
   }
 
   @Test
-  void expectedChangeNameFromUser() throws Exception{
+  void expectedUserFromEndPointUsingUserId() throws Exception{
       String id = this.userRepository.findAll().get(0).getId();
 
-   this.mocMvc
-       .perform(get("/user/"+id)
-       .contentType("application/json"))
-       .andExpect(status().isOk());
+      this.mocMvc
+          .perform(get("/user/"+id)
+          .contentType("application/json"))
+          .andExpect(status().isOk());
+  }
+
+
+
+  @Test
+  void expectedChangeNameFromUser() throws Exception{
+      User user = this.userRepository.findAll().get(0);
+      user.setName("new name");
+      
+
+      this.mocMvc
+          .perform((put("/user/"+user.getId())                  
+          .contentType("application/json").content(this.objectMapper.writeValueAsString(user)))
+          .andExpect(status().isOk())
+          .andExpect(jsonPath("name", Is.is(user.getName()) ));
   }
 }
