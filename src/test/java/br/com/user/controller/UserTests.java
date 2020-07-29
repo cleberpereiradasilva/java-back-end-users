@@ -74,7 +74,7 @@ class UserControllerTests {
       String id = this.userRepository.findAll().get(0).getId();
 
    this.mocMvc
-       .perform(get("/user/eee"+id)
+       .perform(get("/user/"+id)
        .contentType("application/json"))
        .andExpect(status().isOk());
   }
