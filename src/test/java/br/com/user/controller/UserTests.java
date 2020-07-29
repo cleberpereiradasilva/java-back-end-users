@@ -1,11 +1,13 @@
 package br.com.user.controller;
   
+import org.aspectj.lang.annotation.Before;
 import org.hamcrest.core.Is;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.web.JsonPath;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
@@ -15,6 +17,7 @@ import br.com.user.respository.UserRepository;
 import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +53,6 @@ class UserControllerTests {
        .andExpect(status().isOk());
   }
 
-
   @Test
   void expectedUserTobeCreated() throws Exception{
    this.mocMvc
@@ -80,18 +82,34 @@ class UserControllerTests {
           .andExpect(status().isOk());
   }
 
-
-
   @Test
   void expectedChangeNameFromUser() throws Exception{
       User user = this.userRepository.findAll().get(0);
       user.setName("new name");
       
-
       this.mocMvc
-          .perform((put("/user/"+user.getId())                  
-          .contentType("application/json").content(this.objectMapper.writeValueAsString(user)))
-          .andExpect(status().isOk())
-          .andExpect(jsonPath("name", Is.is(user.getName()) ));
+        .perform(put("/user/"+user.getId())
+        .contentType("application/json")
+        .content(this.objectMapper.writeValueAsString(user)))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("name", Is.is(user.getName()) ));
+  }
+
+  @Test
+  void expectedDeleteUser() throws Exception{
+      this.user.setEmail("nmewemail@empresa.com");
+      this.mocMvc
+        .perform(post("/user")
+        .contentType("application/json")
+        .content(this.objectMapper.writeValueAsString(this.user)))
+        .andExpect(status().isCreated());
+      
+
+      String id = this.userRepository.findAll().get(0).getId();
+      
+      this.mocMvc
+        .perform(delete("/user/"+id)
+        .contentType("application/json"))
+        .andExpect(status().isOk());
   }
 }
