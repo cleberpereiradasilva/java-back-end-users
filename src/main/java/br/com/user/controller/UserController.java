@@ -40,7 +40,7 @@ public class UserController{
 
 	@GetMapping
 	public ResponseEntity<List<UserResponseDTO>> listUser(){
-      Type listType = new  TypeToken<List<UserResponseDTO>>() {}.getType();
+                Type listType = new  TypeToken<List<UserResponseDTO>>() {}.getType();
 			List<UserResponseDTO> listUserDTO = this.modelMapper.map(this.userRepository.findAll(), listType);
 			return new ResponseEntity<>(listUserDTO, HttpStatus.OK);
 	}
