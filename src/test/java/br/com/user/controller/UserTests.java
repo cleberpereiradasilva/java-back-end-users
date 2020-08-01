@@ -54,6 +54,15 @@ class UserControllerTests {
   }
 
   @Test
+  void expectedExceptionOnCreated() throws Exception{
+   this.mocMvc
+       .perform(post("/user")
+       .contentType("application/json"))
+       .andExpect(status().isBadRequest());       
+  }
+
+
+  @Test
   void expectedUserTobeCreated() throws Exception{
    this.mocMvc
        .perform(post("/user")
