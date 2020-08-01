@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
 
 import org.hibernate.engine.internal.Collections;
 import org.modelmapper.ModelMapper;
@@ -47,7 +48,7 @@ public class UserController{
 
 
 	@PostMapping
-	public ResponseEntity<UserResponseDTO> saveUser(@RequestBody UserRequestDTO user){
+	public ResponseEntity<UserResponseDTO> saveUser(@RequestBody @Valid User user){
       
 		User newUser = this.modelMapper.map(user, User.class);
 		return new ResponseEntity<>(this.modelMapper.map(this.userRepository.save(newUser), UserResponseDTO.class), HttpStatus.CREATED);
