@@ -26,3 +26,6 @@ $ ./run.sh
 ## See documentation in:
 
 `http://localhost:8080/swagger-ui.html`
+
+
+![Swagger Image](swagger)
