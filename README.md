@@ -28,4 +28,4 @@ $ ./run.sh
 `http://localhost:8080/swagger-ui.html`
 
 
-![Swagger Image](swagger.png)
+![Swagger Image](swagger_screen.png)
